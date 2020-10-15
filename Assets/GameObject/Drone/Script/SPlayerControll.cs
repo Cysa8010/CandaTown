@@ -71,7 +71,7 @@ public class SPlayerControll : SIUnitController
         {
             state_ = SDroneControll.ControllState.ACTION2;
         }
-        Print();
+        //Print();
     }
 
     void Print()
