@@ -1,6 +1,8 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Assertions.Must;
 
 /* ドローン本体制御
  * ドローンのプロパティ
@@ -16,6 +18,17 @@ public class SDroneControll : MonoBehaviour
      * TriggerWeapon - CreateBullet
      * SwitchWeapon  - ChangeSelector
     */
+    [Flags]
+    public enum ControllState
+    {
+        NONE = 0,       //!< 待機
+        MOVE = 1,       //!< 移動
+        TURN = 1 << 1,       //!< 旋回
+        ACTION1 = 1 << 2,    //!< 武器1(左)
+        ACTION2 = 1 << 3     //!< 武器2(右)
+    }
+
+
     // Start is called before the first frame update
     void Start()
     {
@@ -25,29 +38,38 @@ public class SDroneControll : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if(Input.GetKey(KeyCode.A))
+
+
+        //if (Input.GetKey(KeyCode.LeftArrow))
+        //{
+        //    Turn(-0.1f);
+        //}
+        //if (Input.GetKey(KeyCode.RightArrow))
+        //{
+        //    Turn(0.1f);
+        //}
+        if (!useScript) return;
+
+        if(useScript.state.HasFlag(ControllState.MOVE))
         {
-            Translate(new Vector3(-1f, 0, 0));
+            Translate(useScript.direction);
         }
-        if (Input.GetKey(KeyCode.D))
+        if (useScript.state.HasFlag(ControllState.TURN))
         {
-            Translate(new Vector3(1f, 0, 0));
+            Turn(useScript.turnAngle);
         }
-        if (Input.GetKey(KeyCode.W))
+        if (useScript.state.HasFlag(ControllState.ACTION1))
         {
-            Translate(new Vector3(0, 0, 1f));
+            // 弾生成
+            GameObject gameObject = Instantiate(weapon1, GameObject.Find("BulletSponerL").transform.position, Quaternion.identity);
+            gameObject.GetComponent<Rigidbody>().AddForce(transform.forward*1000.0f);
+
         }
-        if (Input.GetKey(KeyCode.S))
+        if (useScript.state.HasFlag(ControllState.ACTION2))
         {
-            Translate(new Vector3(0, 0, -1f));
-        }
-        if(Input.GetKey(KeyCode.UpArrow))
-        {
-            Translate(new Vector3(0, 1, 0));
-        }
-        if (Input.GetKey(KeyCode.DownArrow))
-        {
-            Translate(new Vector3(0, -1, 0));
+            // 弾生成
+            GameObject gameObject = Instantiate(weapon2, GameObject.Find("BulletSponerR").transform.position, Quaternion.identity);
+            gameObject.GetComponent<Rigidbody>().AddForce(transform.forward * 1000.0f);
         }
     }
 
@@ -57,19 +79,19 @@ public class SDroneControll : MonoBehaviour
     {
         transform.GetComponent<Rigidbody>().AddForce(vec);
     }
-    // 上昇・下降(あれ、いらなくね?)
-    void TranslateUD(Vector3 vec)
-    {
-
-    }
     // 旋回(回転ともいう)
-    void Turn(Vector3 vec)
+    void Turn(float rot)
     {
-
+        transform.Rotate(new Vector3(0, rot, 0));
     }
 
     /* -- プロパティ -- */
     int hp;
     int atk;
-    
+
+    [SerializeField]
+    private SIUnitController useScript = null;
+    public GameObject weapon1 = null;
+    [SerializeField]
+    private GameObject weapon2;
 }
