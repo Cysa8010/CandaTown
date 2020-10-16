@@ -21,62 +21,55 @@ public class SPlayerControll : SIUnitController
         // 移動
         if (Input.GetKey(KeyCode.A))
         {
-            state_ = SDroneControll.ControllState.MOVE;
-            moveValue_ = new Vector3(-1f, 0, 0);
+            state_ |= SDroneControll.ControllState.MOVE;
+            moveValue_.x += -1f;
         }
         if (Input.GetKey(KeyCode.D))
         {
-            state_ = SDroneControll.ControllState.MOVE;
-            moveValue_ = new Vector3(+1f, 0, 0);
+            state_ |= SDroneControll.ControllState.MOVE;
+            moveValue_.x += 1f;
         }
         if (Input.GetKey(KeyCode.W))
         {
-            state_ = SDroneControll.ControllState.MOVE;
-            moveValue_ = new Vector3(0, 0, 1f);
+            state_ |= SDroneControll.ControllState.MOVE;
+            moveValue_.z += 1f;
         }
         if (Input.GetKey(KeyCode.S))
         {
-            state_ = SDroneControll.ControllState.MOVE;
-            moveValue_ = new Vector3(0, 0, -1f);
+            state_ |= SDroneControll.ControllState.MOVE;
+            moveValue_.z += -1f;
         }
         if (Input.GetKey(KeyCode.UpArrow))
         {
-            state_ = SDroneControll.ControllState.MOVE;
-            moveValue_ = new Vector3(0, 1, 0);
+            state_ |= SDroneControll.ControllState.MOVE;
+            moveValue_.y += 1f;
         }
         if (Input.GetKey(KeyCode.DownArrow))
         {
-            state_ = SDroneControll.ControllState.MOVE;
-            moveValue_ = new Vector3(0, -1, 0);
+            state_ |= SDroneControll.ControllState.MOVE;
+            moveValue_.x += -1f;
         }
 
         // 旋回
         if (Input.GetKey(KeyCode.LeftArrow))
         {
-            state_ = SDroneControll.ControllState.TURN;
+            state_ |= SDroneControll.ControllState.TURN;
             turnValue_ = -0.5f;
         }
         if (Input.GetKey(KeyCode.RightArrow))
         {
-            state_ = SDroneControll.ControllState.TURN;
+            state_ |= SDroneControll.ControllState.TURN;
             turnValue_ = 0.5f;
         }
 
         // 武器
         if (Input.GetKey(KeyCode.Mouse0))//MouseLeft
         {
-            state_ = SDroneControll.ControllState.ACTION1;
+            state_ |= SDroneControll.ControllState.ACTION1;
         }
         if (Input.GetKey(KeyCode.Mouse1))//MouseLeft
         {
-            state_ = SDroneControll.ControllState.ACTION2;
+            state_ |= SDroneControll.ControllState.ACTION2;
         }
-        //Print();
     }
-
-    void Print()
-    {
-        Debug.Log("Player : " + state + " : ");
-    }
-    
 }
