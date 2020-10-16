@@ -38,16 +38,6 @@ public class SDroneControll : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-
-
-        //if (Input.GetKey(KeyCode.LeftArrow))
-        //{
-        //    Turn(-0.1f);
-        //}
-        //if (Input.GetKey(KeyCode.RightArrow))
-        //{
-        //    Turn(0.1f);
-        //}
         if (!useScript) return;
 
         if(useScript.state.HasFlag(ControllState.MOVE))
