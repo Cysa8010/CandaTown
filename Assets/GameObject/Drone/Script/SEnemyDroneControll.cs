@@ -2,8 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class SPlayerControll : SIUnitController
-{/* ! Cation !                ↑MonoBehaviourじゃないよ↑  */
+public class SEnemyDroneControll : SIUnitController
+{
     // Start is called before the first frame update
     void Start()
     {
@@ -16,9 +16,6 @@ public class SPlayerControll : SIUnitController
     {
         ResetValue();
 
-        // ここにキー入力またはAIのアルゴリズム
-
-        // 移動
         if (Input.GetKey(KeyCode.A))
         {
             state_ = SDroneControll.ControllState.MOVE;
@@ -71,12 +68,7 @@ public class SPlayerControll : SIUnitController
         {
             state_ = SDroneControll.ControllState.ACTION2;
         }
-        Print();
     }
 
-    void Print()
-    {
-        Debug.Log("Player : " + state + " : ");
-    }
-    
+
 }

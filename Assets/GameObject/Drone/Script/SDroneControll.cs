@@ -38,16 +38,6 @@ public class SDroneControll : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-
-
-        //if (Input.GetKey(KeyCode.LeftArrow))
-        //{
-        //    Turn(-0.1f);
-        //}
-        //if (Input.GetKey(KeyCode.RightArrow))
-        //{
-        //    Turn(0.1f);
-        //}
         if (!useScript) return;
 
         if(useScript.state.HasFlag(ControllState.MOVE))
@@ -91,7 +81,8 @@ public class SDroneControll : MonoBehaviour
 
     [SerializeField]
     private SIUnitController useScript = null;
-    public GameObject weapon1 = null;
     [SerializeField]
-    private GameObject weapon2;
+    private GameObject weapon1 = null;
+    [SerializeField]
+    private GameObject weapon2 = null;
 }

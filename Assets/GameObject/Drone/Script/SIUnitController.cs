@@ -18,6 +18,7 @@ public class SIUnitController : MonoBehaviour
 
     protected void ResetValue()
     {
+        turnValue_ = 0f;
         moveValue_ = Vector3.zero;
         state_ = SDroneControll.ControllState.NONE;
     }
