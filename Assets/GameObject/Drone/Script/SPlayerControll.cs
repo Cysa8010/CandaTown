@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -19,44 +20,65 @@ public class SPlayerControll : SIUnitController
         // ここにキー入力またはAIのアルゴリズム
 
         // 移動
+
+        //[Flags]
+        int dire = 0;
+
         if (Input.GetKey(KeyCode.A))
         {
             state_ |= SDroneControll.ControllState.MOVE;
-            moveValue_.x += -1f;
+            dire |= 1;
+            moveValue_ += - transform.right;
         }
         if (Input.GetKey(KeyCode.D))
         {
             state_ |= SDroneControll.ControllState.MOVE;
-            moveValue_.x += 1f;
+            dire |= 1;
+            moveValue_ += transform.right;
         }
+
         if (Input.GetKey(KeyCode.W))
         {
             state_ |= SDroneControll.ControllState.MOVE;
-            moveValue_.z += 1f;
+            dire |= 2;
+            moveValue_ += transform.forward;
         }
         if (Input.GetKey(KeyCode.S))
         {
             state_ |= SDroneControll.ControllState.MOVE;
-            moveValue_.z += -1f;
+            dire |= 2;
+            moveValue_ += - transform.forward;
         }
-        if (Input.GetKey(KeyCode.UpArrow))
+
+        if (Input.GetKey(KeyCode.R))
         {
             state_ |= SDroneControll.ControllState.MOVE;
-            moveValue_.y += 1f;
+            dire |= 4;
+            moveValue_ += transform.up;
         }
-        if (Input.GetKey(KeyCode.DownArrow))
+        if (Input.GetKey(KeyCode.F))
         {
             state_ |= SDroneControll.ControllState.MOVE;
-            moveValue_.x += -1f;
+            dire |= 4;
+            moveValue_ += -transform.up;
+        }
+
+        if(dire==3||dire==5||dire==6)
+        {
+            moveValue_ /= 2f;
+        }
+        if(dire==7)
+        {
+            moveValue_ /= 3;
         }
 
         // 旋回
-        if (Input.GetKey(KeyCode.LeftArrow))
+        if (Input.GetKey(KeyCode.Q))
         {
             state_ |= SDroneControll.ControllState.TURN;
             turnValue_ = -0.5f;
         }
-        if (Input.GetKey(KeyCode.RightArrow))
+        if (Input.GetKey(KeyCode.E))
         {
             state_ |= SDroneControll.ControllState.TURN;
             turnValue_ = 0.5f;

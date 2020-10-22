@@ -81,7 +81,8 @@ public class SDroneControll : MonoBehaviour
 
     [SerializeField]
     private SIUnitController useScript = null;
-    public GameObject weapon1 = null;
     [SerializeField]
-    private GameObject weapon2;
+    private GameObject weapon1 = null;
+    [SerializeField]
+    private GameObject weapon2 = null;
 }

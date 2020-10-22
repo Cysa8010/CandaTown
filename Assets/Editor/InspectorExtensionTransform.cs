@@ -52,8 +52,8 @@ public class InspectorExtensionTransform : Editor
         {
             EditorGUILayout.LabelField("World (Read Only)");
             EditorGUILayout.Vector3Field("Position", _transform.position);
-            EditorGUILayout.Vector3Field("Rotation", _transform.rotation.eulerAngles);
-            EditorGUILayout.Vector3Field("Scale", _transform.lossyScale);
+            EditorGUILayout.Vector3Field("Rotation(euler)", _transform.rotation.eulerAngles);
+            EditorGUILayout.Vector3Field("Scale(lossyScale)", _transform.lossyScale);
         }
     }
 }
