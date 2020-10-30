@@ -1,13 +1,9 @@
 fileFormatVersion: 2
-<<<<<<< HEAD
-guid: c812c65e68a15c2439a360c2cdec9c5e
-=======
 <<<<<<< HEAD:Assets/Nanai.meta
 guid: 85b3b205c1cba30478006b1ee5d68526
 =======
 guid: c812c65e68a15c2439a360c2cdec9c5e
 >>>>>>> main:Assets/Script/Player.meta
->>>>>>> main
 folderAsset: yes
 DefaultImporter:
   externalObjects: {}
