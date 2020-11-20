@@ -24,39 +24,47 @@ public class SPlayerControll : SIUnitController
         //[Flags]
         int dire = 0;
 
-        if (Input.GetKey(KeyCode.A))
+        // Left
+        if (Input.GetKey(KeyCode.A)|| Input.GetAxis("Horizontal")<-0.8f)
         {
             state_ |= SDroneControll.ControllState.MOVE;
             dire |= 1;
             moveValue_ += - transform.right;
         }
-        if (Input.GetKey(KeyCode.D))
+        // Right
+        if (Input.GetKey(KeyCode.D)||Input.GetAxis("Horizontal") > 0.8f)
         {
             state_ |= SDroneControll.ControllState.MOVE;
             dire |= 1;
             moveValue_ += transform.right;
         }
 
-        if (Input.GetKey(KeyCode.W))
+        // Front
+        if (Input.GetKey(KeyCode.W)|| Input.GetAxis("Vertical")>0.8f)
         {
             state_ |= SDroneControll.ControllState.MOVE;
             dire |= 2;
             moveValue_ += transform.forward;
         }
-        if (Input.GetKey(KeyCode.S))
+
+        // Back
+        if (Input.GetKey(KeyCode.S) || Input.GetAxis("Vertical") <-0.8f)
         {
             state_ |= SDroneControll.ControllState.MOVE;
             dire |= 2;
             moveValue_ += - transform.forward;
         }
 
-        if (Input.GetKey(KeyCode.R))
+        // Up
+        if (Input.GetKey(KeyCode.R) || Input.GetAxis("Vertical2") < -0.8f)
         {
             state_ |= SDroneControll.ControllState.MOVE;
             dire |= 4;
             moveValue_ += transform.up;
         }
-        if (Input.GetKey(KeyCode.F))
+
+        // Down
+        if (Input.GetKey(KeyCode.F) || Input.GetAxis("Vertical2") > 0.8f)
         {
             state_ |= SDroneControll.ControllState.MOVE;
             dire |= 4;
@@ -72,13 +80,15 @@ public class SPlayerControll : SIUnitController
             moveValue_ /= 3;
         }
 
+        moveValue_*=speed;
+
         // 旋回
-        if (Input.GetKey(KeyCode.Q))
+        if (Input.GetKey(KeyCode.Q) || Input.GetAxis("Horizontal2") < -0.8f)
         {
             state_ |= SDroneControll.ControllState.TURN;
             turnValue_ = -0.5f;
         }
-        if (Input.GetKey(KeyCode.E))
+        if (Input.GetKey(KeyCode.E) || Input.GetAxis("Horizontal2") > 0.8f)
         {
             state_ |= SDroneControll.ControllState.TURN;
             turnValue_ = 0.5f;
@@ -93,5 +103,10 @@ public class SPlayerControll : SIUnitController
         {
             state_ |= SDroneControll.ControllState.ACTION2;
         }
+
+        Debug.Log("H "+Input.GetAxis("Horizontal")+" V "+ Input.GetAxis("Vertical")+ "H " + Input.GetAxis("Horizontal2") + " V " + Input.GetAxis("Vertical2"));
     }
+
+    [SerializeField]
+    private float speed = 1.0f;
 }
