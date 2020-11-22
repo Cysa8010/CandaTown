@@ -12,12 +12,14 @@ public class EnemyChaseMove : MonoBehaviour
     [SerializeField] float SensingRange; //感知範囲
     [SerializeField] float SpdChangeRange; //感知後移動速度を変える距離
     float Distance; //エネミーとPlayerの距離
+    Animator animator;
     void Start()
     {
         //エネミーのNavMeshAgentを取得
         Nav = GetComponent<NavMeshAgent>();
         //目的地のオブジェクトを取得
         Destination = GameObject.Find("Player");
+        animator = GetComponent<Animator>();
         NavDefaultSpeed = Nav.speed;
     }
 
@@ -27,6 +29,7 @@ public class EnemyChaseMove : MonoBehaviour
         Distance = Vector3.Distance(Destination.transform.position, this.transform.position);
         if(Distance <= SensingRange)
         {
+            animator.SetBool("Is_Running", true);
             //目的地を設定
             Nav.SetDestination(Destination.transform.position);
             
