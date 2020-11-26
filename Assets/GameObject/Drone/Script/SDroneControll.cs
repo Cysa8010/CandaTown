@@ -67,8 +67,8 @@ public class SDroneControll : MonoBehaviour
     // FBLR
     void Translate(Vector3 vec)
     {
-        //transform.GetComponent<Rigidbody>().AddForce(vec);
-        transform.Translate(vec.normalized);
+        transform.GetComponent<Rigidbody>().AddForce(vec);
+        //transform.Translate(vec.normalized);
     }
     // 旋回(回転ともいう)
     void Turn(float rot)

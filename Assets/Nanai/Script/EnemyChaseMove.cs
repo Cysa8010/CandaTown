@@ -18,7 +18,7 @@ public class EnemyChaseMove : MonoBehaviour
         //エネミーのNavMeshAgentを取得
         Nav = GetComponent<NavMeshAgent>();
         //目的地のオブジェクトを取得
-        Destination = GameObject.Find("Player");
+        Destination = GameObject.Find("Goal");
         animator = GetComponent<Animator>();
         NavDefaultSpeed = Nav.speed;
     }
