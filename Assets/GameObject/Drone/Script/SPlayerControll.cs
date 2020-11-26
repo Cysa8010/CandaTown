@@ -95,16 +95,17 @@ public class SPlayerControll : SIUnitController
         }
 
         // 武器
-        if (Input.GetKey(KeyCode.Mouse0))//MouseLeft
+        if (Input.GetKey(KeyCode.Mouse0)|| 0 < Input.GetAxis("LTrigger"))//MouseLeft
         {
             state_ |= SDroneControll.ControllState.ACTION1;
         }
-        if (Input.GetKey(KeyCode.Mouse1))//MouseLeft
+        if (Input.GetKey(KeyCode.Mouse1)|| 0 < Input.GetAxis("RTrigger"))//MouseLeft
         {
             state_ |= SDroneControll.ControllState.ACTION2;
         }
 
-        Debug.Log("H "+Input.GetAxis("Horizontal")+" V "+ Input.GetAxis("Vertical")+ "H " + Input.GetAxis("Horizontal2") + " V " + Input.GetAxis("Vertical2"));
+        //Debug.Log("H "+Input.GetAxis("Horizontal")+" V "+ Input.GetAxis("Vertical")+ "H " + Input.GetAxis("Horizontal2") + " V " + Input.GetAxis("Vertical2"));
+        //Debug.Log("Unknown" + Input.GetAxis("LRTrigger") + "LTrigger(Win)" + Input.GetAxis("LTrigger") + "RTrigger(Win)" + Input.GetAxis("RTrigger"));
     }
 
     [SerializeField]
