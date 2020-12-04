@@ -72,7 +72,7 @@ public class EnemyControll : MonoBehaviour
     // FBLR
     void Translate(Vector3 vec)
     {
-        transform.GetComponent<Rigidbody>().AddForce(vec);
+        this.gameObject.transform.position = new Vector3(this.gameObject.transform.position.x + vec.x , this.gameObject.transform.position.y + vec.y, this.gameObject.transform.position.z + vec.z);
     }
     // 旋回(回転ともいう)
     void Turn(float rot)

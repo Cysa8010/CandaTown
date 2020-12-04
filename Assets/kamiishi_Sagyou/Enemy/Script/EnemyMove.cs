@@ -4,117 +4,99 @@ using UnityEngine;
 
 public class EnemyMove : EUnitControler
 {
-    [SerializeField] private int moveTimer; //移動管理用
+    [SerializeField] private int moveTileNumber , listSize;         //移動管理用
+    [SerializeField] private float moveSpeed;
+    [SerializeField] private bool firstPosCheck , moveStop;
+    [SerializeField] private Vector2 wayPos;  // 次に向かう座標
+    [SerializeField] private AStar _aStar;          
+    [SerializeField] private AStarSample aStarSample;   //
+    [SerializeField] private List<AStarGrid.Cell> _shortestWay = new List<AStarGrid.Cell>(); //移動先座標データ保管用
 
     void Start()
     {
-        // とりあえず変数の初期化
-        ResetValue();
+        // 変数の初期化
+        moveTileNumber = 0;
+        moveSpeed = 0.02f;
+        firstPosCheck = false;
+        moveStop = false;
+        // 親のコンポーネント取得
+        aStarSample = this.gameObject.transform.GetComponentInParent<AStarSample>();
+
+ 
+        // グリッドデータ取得
+        _aStar = aStarSample.GetAstarGrid();
+
     }
 
     // Update is called once per frame
     void Update()
     {
+        // 座標データの更新
+        // 更新頻度をいじるならここで
+        _shortestWay = aStarSample.GetShortestWay();
+
+        // 初期座標の取得
+        if (firstPosCheck ==false)
+        {
+            listSize = _shortestWay.Count;
+            moveTileNumber = listSize - 1;
+
+            wayPos.x = (float)(_shortestWay[moveTileNumber].coord.x + 0.5f);
+            wayPos.y = (float)(_shortestWay[moveTileNumber].coord.y + 0.5f);
+            firstPosCheck = true;
+        }
+        // ゴール到着したら
+        if (((_shortestWay[0].coord.x + 0.4f <= this.gameObject.transform.position.x) && (this.gameObject.transform.position.x <= _shortestWay[0].coord.x + 0.6f)) &&
+           ((_shortestWay[0].coord.y + 0.4f <= this.gameObject.transform.position.z) && (this.gameObject.transform.position.z <= _shortestWay[0].coord.y + 0.6f)))
+        {
+            moveStop = true;
+            state_ = EnemyControll.EnemyControllState.MOVE;
+            moveValue_ = new Vector3(0, 0, 0);
+        }
+
+        if (!moveStop)
+        {
 
 
-        // ここにキー入力またはAIのアルゴリズム
+            // 目的座標の更新
+            if (((_shortestWay[moveTileNumber].coord.x + 0.4f <= this.gameObject.transform.position.x) && (this.gameObject.transform.position.x <= _shortestWay[moveTileNumber].coord.x + 0.6f)) &&
+               ((_shortestWay[moveTileNumber].coord.y + 0.4f <= this.gameObject.transform.position.z) && (this.gameObject.transform.position.z <= _shortestWay[moveTileNumber].coord.y + 0.6f)))
+            {
 
-        moveTimer++;
+                wayPos.x = (float)(_shortestWay[moveTileNumber - 1].coord.x + 0.5f);
+                wayPos.y = (float)(_shortestWay[moveTileNumber - 1].coord.y + 0.5f);
+                moveTileNumber -= 1;
+            }
+            // 移動(受け取ったデータを基に移動) , x座標とy座標を別々に更新する
 
-        // 移動 moveTimer毎に方向を変更
 
-        if (moveTimer < 180 * 3)
-        {
-            E_Move(2);
+            // x座標の距離のほうがz座標の移動距離より多い
+            if (System.Math.Abs((wayPos.x - this.gameObject.transform.position.x)) > System.Math.Abs((wayPos.y - this.gameObject.transform.position.z)))
+            {
+                // x座標
+                if (wayPos.x > this.gameObject.transform.position.x)
+                {
+                    E_Move(1);
+                }
+                else if (wayPos.x < this.gameObject.transform.position.x)
+                {
+                    E_Move(3);
+                }
+            }
+            // z座標
+            else
+            {
+                if (wayPos.y > this.gameObject.transform.position.z)
+                {
+                    E_Move(0);
+                }
+                else if (wayPos.y < this.gameObject.transform.position.z)
+                {
+                    E_Move(2);
+                }
+            }
         }
-        else if(180 * 3 <= moveTimer && moveTimer < 180 * 6)
-        {
-            E_Move(1);
-        }
-        else if(180 * 6 <= moveTimer && moveTimer < 180 * 8)
-        {
-            E_Move(0);
-        }
-        else if (180 * 8 <= moveTimer && moveTimer < 180 * 12)
-        {
-            E_Move(1);
-        }
-        else if (180 * 12 <= moveTimer && moveTimer < 180 * 19)
-        {
-            E_Move(2);
-        }
-        else if (180 * 19 <= moveTimer && moveTimer < 180 * 21)
-        {
-            E_Move(3);
-        }
-        else if (180 * 21 <= moveTimer && moveTimer < 180 * 23)
-        {
-            E_Move(0);
-        }
-        else if (180 * 23 <= moveTimer && moveTimer < 180 * 25)
-        {
-            E_Move(3);
-        }
-        else if (180 * 25 <= moveTimer && moveTimer < 180 * 27)
-        {
-            E_Move(0);
-        }
-        else if (180 * 27 <= moveTimer && moveTimer < 180 * 29)
-        {
-            E_Move(3);
-        }
-        //if (Input.GetKey(KeyCode.A))
-        //{
-        //    state_ = SDroneControll.ControllState.MOVE;
-        //    moveValue_ = new Vector3(-1f, 0, 0);
-        //}
-        //if (Input.GetKey(KeyCode.D))
-        //{
-        //    state_ = SDroneControll.ControllState.MOVE;
-        //    moveValue_ = new Vector3(+1f, 0, 0);
-        //}
-        //if (Input.GetKey(KeyCode.W))
-        //{
-        //    state_ = SDroneControll.ControllState.MOVE;
-        //    moveValue_ = new Vector3(0, 0, 1f);
-        //}
-        //if (Input.GetKey(KeyCode.S))
-        //{
-        //    state_ = SDroneControll.ControllState.MOVE;
-        //    moveValue_ = new Vector3(0, 0, -1f);
-        //}
-        //if (Input.GetKey(KeyCode.UpArrow))
-        //{
-        //    state_ = SDroneControll.ControllState.MOVE;
-        //    moveValue_ = new Vector3(0, 1, 0);
-        //}
-        //if (Input.GetKey(KeyCode.DownArrow))
-        //{
-        //    state_ = SDroneControll.ControllState.MOVE;
-        //    moveValue_ = new Vector3(0, -1, 0);
-        //}
 
-        //// 旋回
-        //if (Input.GetKey(KeyCode.LeftArrow))
-        //{
-        //    state_ = SDroneControll.ControllState.TURN;
-        //    turnValue_ = -0.5f;
-        //}
-        //if (Input.GetKey(KeyCode.RightArrow))
-        //{
-        //    state_ = SDroneControll.ControllState.TURN;
-        //    turnValue_ = 0.5f;
-        //}
-
-        //// 武器
-        //if (Input.GetKey(KeyCode.Mouse0))//MouseLeft
-        //{
-        //    state_ = SDroneControll.ControllState.ACTION1;
-        //}
-        //if (Input.GetKey(KeyCode.Mouse1))//MouseLeft
-        //{
-        //    state_ = SDroneControll.ControllState.ACTION2;
-        //}
     }
 
     private void E_Move(int moveDirection)
@@ -123,25 +105,25 @@ public class EnemyMove : EUnitControler
         if (moveDirection == 0)
         {
             state_ = EnemyControll.EnemyControllState.MOVE;
-            moveValue_ = new Vector3(0, 0, -1f);
+            moveValue_ = new Vector3(0, 0, moveSpeed);
         }
         // 右
-        else if (moveDirection == 1)
+        if (moveDirection == 1)
         {
             state_ = EnemyControll.EnemyControllState.MOVE;
-            moveValue_ = new Vector3(+1f, 0, 0);
+            moveValue_ = new Vector3(moveSpeed, 0, 0);
         }
         // 下
-        else if (moveDirection == 2)
+        if (moveDirection == 2)
         {
             state_ = EnemyControll.EnemyControllState.MOVE;
-            moveValue_ = new Vector3(0, 0, 1f);
+            moveValue_ = new Vector3(0, 0, -moveSpeed);
         }
         // 左
-        else if (moveDirection == 3)
+        if (moveDirection == 3)
         {
             state_ = EnemyControll.EnemyControllState.MOVE;
-            moveValue_ = new Vector3(-1f, 0, 0);
+            moveValue_ = new Vector3(-moveSpeed, 0, 0);
         }
 
     }

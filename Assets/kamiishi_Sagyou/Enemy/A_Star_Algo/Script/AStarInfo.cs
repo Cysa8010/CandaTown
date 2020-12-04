@@ -3,6 +3,8 @@ using System.Linq;
 
 public class AStar
 {
+    
+
     private class AStarInfo
     {
         public AStarGrid.Cell cell;
@@ -110,4 +112,5 @@ public class AStar
         result.distance = (goalCell.coord - targetCell.coord).Magnitude;
         return result;
     }
+
 }

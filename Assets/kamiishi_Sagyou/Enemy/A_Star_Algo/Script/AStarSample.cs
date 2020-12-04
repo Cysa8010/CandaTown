@@ -1,4 +1,4 @@
-﻿us#if UNITY_EDITOR
+﻿#if UNITY_EDITOR
 using System.Collections.Generic;
 using UnityEngine;
 using System.Linq;
@@ -8,26 +8,27 @@ using UnityEditor;
 public class AStarSample : MonoBehaviour
 {
 
-    private const int COLUMN_COUNT = 10;
-    private const int ROW_COUNT = 10;
+    private const int columnCount = 100;
+    private const int rowCount = 100;
     private const float CELL_SIZE = 1.0f;
 
     [SerializeField]
     private AStarGrid _grid = null;
 
     private AStar _aStar;
-    private List<AStarGrid.Cell> _shortestWay = new List<AStarGrid.Cell>();
+    [SerializeField] private List<AStarGrid.Cell> _shortestWay = new List<AStarGrid.Cell>();
 
-    private void OnEnable()
+    public void OnEnable()
     {
         if (_grid == null)
         {
-            _grid = new AStarGrid(COLUMN_COUNT, ROW_COUNT);
+            _grid = new AStarGrid(columnCount, rowCount);
             _grid.StartCell = _grid.GetCell(0, 0);
-            _grid.GoalCell = _grid.GetCell(COLUMN_COUNT - 1, ROW_COUNT - 1);
+            _grid.GoalCell = _grid.GetCell(columnCount - 1, rowCount - 1);
         }
         _aStar = new AStar(_grid);
     }
+
 
     private void OnDrawGizmos()
     {
@@ -53,7 +54,7 @@ public class AStarSample : MonoBehaviour
             intersection /= CELL_SIZE;
             var selectedColumn = Mathf.FloorToInt(intersection.x);
             var selectedRow = Mathf.FloorToInt(intersection.z);
-            if (selectedColumn >= 0 && selectedColumn < COLUMN_COUNT && selectedRow >= 0 && selectedRow < ROW_COUNT)
+            if (selectedColumn >= 0 && selectedColumn < columnCount && selectedRow >= 0 && selectedRow < rowCount)
             {
                 GenericMenu menu = new GenericMenu();
 
@@ -119,6 +120,25 @@ public class AStarSample : MonoBehaviour
 
         Gizmos.color = preColor;
         Gizmos.matrix = preMatrix;
+    }
+
+    void Update()
+    {
+
+        // ここで最短距離を計算する
+        _shortestWay = _aStar.GetShortestWay(_grid.StartCell, _grid.GoalCell);
+
+    }
+
+    public AStar GetAstarGrid()
+    {
+        return _aStar;
+    }
+
+    // 最短経路取得
+    public List<AStarGrid.Cell> GetShortestWay()
+    {
+        return _shortestWay;
     }
 
 }
