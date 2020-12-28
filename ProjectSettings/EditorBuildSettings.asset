@@ -4,5 +4,8 @@
 EditorBuildSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
-  m_Scenes: []
+  m_Scenes:
+  - enabled: 1
+    path: Assets/Nanai/Scene/Movie2.unity
+    guid: 2bdf6ebd96b49c44b90d51b5e689bca7
   m_configObjects: {}
