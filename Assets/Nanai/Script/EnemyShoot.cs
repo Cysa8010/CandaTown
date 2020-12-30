@@ -5,12 +5,13 @@ using UnityEngine;
 public class EnemyShoot : MonoBehaviour
 {
     [SerializeField] GameObject Target;
-    EnemyChaseMove ChaseMove;
+    EnemyAChaseMove ChaseMove;
     private float sec;
     [SerializeField] float FireInterval;
+    [SerializeField] float FireRange; //攻撃範囲
     void Awake()
     {
-        ChaseMove = this.GetComponent<EnemyChaseMove>();
+        ChaseMove = this.GetComponent<EnemyAChaseMove>();
     }
     // Start is called before the first frame update
     void Start()
@@ -24,11 +25,14 @@ public class EnemyShoot : MonoBehaviour
         //Target発見時
         if (ChaseMove.IsDiscovery)
         {
-            sec += Time.deltaTime;
-            if (sec >= FireInterval)
+            if (ChaseMove.Fire)
             {
-                sec = 0.0f;
-                Shot();
+                sec += Time.deltaTime;
+                if (sec >= FireInterval)
+                {
+                    sec = 0.0f;
+                    Shot();
+                }
             }
         }
     }
@@ -43,10 +47,16 @@ public class EnemyShoot : MonoBehaviour
         Ray ray = new Ray(new Vector3(this.transform.position.x, (float)a, this.transform.position.z), dist);
         RaycastHit rayHit;
 
-        //AgentからTargetへ向けて感知範囲の距離だけRayを飛ばす 結果をrayHitに格納
-        Physics.Raycast(ray, out rayHit, ChaseMove.SensingRange);
+        //AgentからTargetへ向けて攻撃範囲の距離だけRayを飛ばす 結果をrayHitに格納
+        Physics.Raycast(ray, out rayHit, FireRange);
         //Debug用Ray表示
-        Debug.DrawRay(ray.origin, ray.direction * ChaseMove.SensingRange, Color.blue, 1, false);
+        Debug.DrawRay(ray.origin, ray.direction * FireRange, Color.blue, 1, false);
+        if (rayHit.collider == null || rayHit.collider.transform.GetInstanceID() != Target.transform.GetInstanceID())
+        {
+            ChaseMove.SetFireAnimation(false);
+            ChaseMove.SetRunningAnimation(true);
+            ChaseMove.SetFireFlag(false);
+        }
         if (rayHit.collider.transform.GetInstanceID() == Target.transform.GetInstanceID())
         {
             Debug.Log("Shoot(Enemy)");
@@ -54,7 +64,6 @@ public class EnemyShoot : MonoBehaviour
             go.GetComponent<Rigidbody>().AddForce(new Vector3(dist.x * 500, dist.y * 50, dist.z * 500));
             //go.transform.position = Vector3.MoveTowards(go.transform.position,
             //    new Vector3(Target.transform.position.x, Target.transform.position.y, Target.transform.position.z), 1.5f);
-            //そりゃあ更新かけ続けないとダメでしょうよ
         }
     }
     // 撃つ弾

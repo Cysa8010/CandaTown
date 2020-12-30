@@ -810,7 +810,7 @@ Animator:
   m_GameObject: {fileID: 1419504076}
   m_Enabled: 1
   m_Avatar: {fileID: 9000000, guid: 8f0565f23a2b58541a475bd3c1393052, type: 3}
-  m_Controller: {fileID: 9100000, guid: 37a505c2d1d52b84d8797830ed42bfea, type: 2}
+  m_Controller: {fileID: 9100000, guid: 901c9fa7c15158a498f57e7cf41e4fc1, type: 2}
   m_CullingMode: 1
   m_UpdateMode: 0
   m_ApplyRootMotion: 1
@@ -4695,7 +4695,7 @@ GameObject:
   - component: {fileID: 1409981258}
   - component: {fileID: 2024165207}
   - component: {fileID: 2024165208}
-  - component: {fileID: 2024165205}
+  - component: {fileID: 1419504079}
   - component: {fileID: 2024165206}
   - component: {fileID: 1419504077}
   - component: {fileID: 2024165204}
@@ -4720,6 +4720,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Target: {fileID: 4593596735594430737}
   FireInterval: 1.5
+  FireRange: 30
   bullet: {fileID: 9187326729362043548, guid: 05635faed25653e42aa33e0bb2fffa2e, type: 3}
   emitter: {fileID: 1269947634}
 --- !u!1 &1419504078
@@ -4739,6 +4740,30 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
+--- !u!114 &1419504079
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1419504076}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3bc54a82e02116c4daa1aa370fff234d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Target: {fileID: 4593596735594430737}
+  Spd: 0.2
+  SensingRange: 20
+  SpdChangeRange: 10
+  searchAngle: 100
+  IsDiscovery: 0
+  Fire: 0
+  PatrolPoints:
+  - {fileID: 636335214}
+  - {fileID: 466328668}
+  - {fileID: 222160457}
+  - {fileID: 268162599}
 --- !u!1 &1419504096
 GameObject:
   m_ObjectHideFlags: 0
@@ -8225,29 +8250,6 @@ NavMeshAgent:
   m_BaseOffset: 0
   m_WalkableMask: 4294967295
   m_ObstacleAvoidanceType: 4
---- !u!114 &2024165205
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1419504076}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ae3154cc22bab37418c632eaee7548bc, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  Target: {fileID: 4593596735594430737}
-  Spd: 0.2
-  SensingRange: 20
-  SpdChangeRange: 10
-  searchAngle: 100
-  IsDiscovery: 0
-  PatrolPoints:
-  - {fileID: 636335214}
-  - {fileID: 466328668}
-  - {fileID: 222160457}
-  - {fileID: 268162599}
 --- !u!114 &2024165206
 MonoBehaviour:
   m_ObjectHideFlags: 0
