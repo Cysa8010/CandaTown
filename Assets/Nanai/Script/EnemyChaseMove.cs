@@ -11,11 +11,11 @@ public class EnemyChaseMove : MonoBehaviour
     [SerializeField] GameObject Target; //最終的な目的地となるオブジェクト
     float AgentDefaultSpeed;//初期移動速度保存用
     [SerializeField] float Spd; //移動速度変更後に使用するSpeed
-    [SerializeField] float SensingRange; //感知範囲
+    [SerializeField] public float SensingRange; //感知範囲
     [SerializeField] float SpdChangeRange; //感知後移動速度を変える距離
     [SerializeField] float searchAngle; //Agentの視野(50と入力すると片側50度なので視界は100度になる)
     float Distance; //Agentと目的地オブジェクトの距離
-    bool IsDiscovery;//Targetを発見したか否かのフラグ
+    public bool IsDiscovery;//Targetを発見したか否かのフラグ
 
     //以下主に巡回の際に使用する変数
     [SerializeField] Transform[] PatrolPoints;//巡回地点オブジェクトを格納する配列
@@ -63,15 +63,18 @@ public class EnemyChaseMove : MonoBehaviour
             //TargetがAgentの視界内かつ感知範囲内か判断
             if (angle <= searchAngle && Distance <= SensingRange)
             {
-                //rayにAgent座標とTargetの方向を格納
-                Ray ray = new Ray(this.transform.position, dist);
+                //rayにRayの原点とする座標とTargetの方向を格納
+                //Ray ray = new Ray(this.transform.position, dist);
+                double a = transform.position.y + 0.2;
+                Ray ray = new Ray(new Vector3(this.transform.position.x, (float)a, this.transform.position.z), dist);
                 RaycastHit rayHit;
 
                 //AgentからTargetへ向けて感知範囲の距離だけRayを飛ばす 結果をrayHitに格納
                 Physics.Raycast(ray, out rayHit, SensingRange);
                 //Debug用Ray表示
                 Debug.DrawRay(ray.origin, ray.direction * SensingRange, Color.red, 1, false);
-                if (rayHit.collider.tag == "Player")
+                //if (rayHit.collider.tag == "Player")
+                if (rayHit.collider.transform.GetInstanceID() == Target.transform.GetInstanceID())
                 {
                     Debug.Log("Target発見");
                     IsDiscovery = true;
